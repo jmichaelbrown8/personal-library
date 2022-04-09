@@ -1,12 +1,12 @@
 const { AuthenticationError } = require("apollo-server-express");
-const { User, Book } = require("../models");
+const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate("books");
+        return await User.findOne({ _id: context.user._id }).populate("books");
       }
       throw new AuthenticationError("You need to be logged in!");
     },
@@ -35,23 +35,31 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (parent, { book }, { user }) => {
-      // check if the context has a user
-      if (user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: user._id },
-          {
-            $addToSet: {
-              savedBooks: book,
-            },
+      // Throw error if user not passed in the context
+      if (!user) throw new AuthenticationError("You need to be logged in!");
+
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        {
+          $addToSet: {
+            savedBooks: book,
           },
-          { new: true, runValidators: true }
-        );
-        return updatedUser;
-      }
-      // else throw auth error
-      throw new AuthenticationError("You need to be logged in!");
+        },
+        { new: true, runValidators: true }
+      );
+      return updatedUser;
     },
-    // removeBook() {},
+    removeBook: async (parent, { bookId }, { user }) => {
+      // Throw error if user not passed in the context
+      if (!user) throw new AuthenticationError("You need to be logged in!");
+
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { savedBooks: { bookId: bookId } } },
+        { new: true }
+      );
+      return updatedUser;
+    },
   },
 };
 
