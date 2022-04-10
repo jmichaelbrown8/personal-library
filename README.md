@@ -2,6 +2,8 @@
 
 A React app to search the google books api, and save books to a personal library (powered by React, GraphQL and MongoDB).
 
+View the deployed app at [https://shielded-woodland-33882.herokuapp.com/](https://shielded-woodland-33882.herokuapp.com/)
+
 ## Prerequisites
 
 - NodeJS
@@ -28,3 +30,5 @@ A React app to search the google books api, and save books to a personal library
 ## Deployment
 
 Deployed to Heroku with MongoDB Atlas using this guide: https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-heroku-and-mongodb-atlas
+
+![screenshot](./screenshot.png)
