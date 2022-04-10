@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   Jumbotron,
   Container,
@@ -15,7 +14,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 const SavedBooks = () => {
   const { loading, data } = useQuery(QUERY_ME);
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const [removeBook] = useMutation(REMOVE_BOOK);
   const user = data?.me || data?.user || {};
 
   if (!user?.username) {

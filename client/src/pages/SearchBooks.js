@@ -30,7 +30,7 @@ const SearchBooks = () => {
     return () => saveBookIds(savedBookIds);
   });
 
-  const [saveBook, { loading, data }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -76,7 +76,7 @@ const SearchBooks = () => {
     }
 
     try {
-      const data = await saveBook({ variables: { book: bookToSave } });
+      await saveBook({ variables: { book: bookToSave } });
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
